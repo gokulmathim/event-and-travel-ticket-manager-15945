@@ -1,21 +1,35 @@
 :root {
+  /* Brand colors */
   --color-primary: #1565c0;
   --color-secondary: #43a047;
   --color-accent: #ffca28;
-  --color-text: #1f2937;
+
+  /* Neutrals */
+  --color-text: #111827; /* slightly darker for improved contrast */
   --color-text-muted: #6b7280;
   --color-bg: #ffffff;
-  --color-bg-soft: #f8fafc;
+  --color-bg-soft: #f5f7fb; /* flatter, brighter soft background */
   --color-border: #e5e7eb;
 
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
-  --shadow-md: 0 2px 6px rgba(0,0,0,0.08);
-  --shadow-lg: 0 8px 20px rgba(0,0,0,0.12);
+  /* Modern soft shadows */
+  --shadow-sm: 0 1px 2px rgba(17, 24, 39, 0.06);
+  --shadow-md: 0 6px 16px rgba(17, 24, 39, 0.08);
+  --shadow-lg: 0 10px 24px rgba(17, 24, 39, 0.12);
 
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
+  /* Rounded shapes */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
   --radius-pill: 999px;
+
+  /* Typography scale */
+  --font-sans: Inter, Roboto, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  --font-size-base: 16px;
+  --line-height-base: 1.6;
+
+  /* Button sizing */
+  --btn-padding-y: 12px;
+  --btn-padding-x: 18px;
 }
 
 * {
@@ -28,13 +42,25 @@ html, body, #root {
 
 body {
   margin: 0;
-  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-  sans-serif;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--color-text);
   background: var(--color-bg);
+}
+
+/* Modern, clean type rhythm */
+h1, h2, h3, h4 {
+  color: var(--color-text);
+  margin: 0 0 8px;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+p {
+  margin: 0 0 10px;
+  color: var(--color-text);
 }
 
 main {
@@ -43,8 +69,97 @@ main {
 
 a {
   color: var(--color-primary);
+  text-underline-offset: 2px;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* Global CTA styles: fully rounded + shadows */
+.btn,
+.btn-primary,
+.btn-secondary,
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 700;
+  border: none;
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease, background-color 120ms ease;
+  text-decoration: none;
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+.btn-primary:hover {
+  filter: brightness(1.03);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+}
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary {
+  background: var(--color-accent);
+  color: #1f2937;
+}
+.btn-secondary:hover {
+  filter: brightness(1.02);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+}
+.btn-secondary:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-danger {
+  background: #e53935;
+  color: #fff;
+}
+.btn-danger:hover {
+  filter: brightness(1.02);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+}
+.btn-danger:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Inputs unified styling */
+input, select, textarea {
+  font-family: var(--font-sans);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  outline: none;
+  background: #fff;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.12);
+}
+
+/* Cards surface */
+.card, .auth-card, .booking-card, .booking-detail-card, .checkout-main, .details-main, .details-aside .cart, .search-filters, .event-card {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Muted text */
+.muted {
+  color: var(--color-text-muted);
 }

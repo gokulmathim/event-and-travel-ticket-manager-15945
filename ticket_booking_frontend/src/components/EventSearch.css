@@ -8,27 +8,37 @@
   display: grid;
   grid-template-columns: 2fr 1.5fr 1fr 1fr auto;
   gap: 10px;
-  background: var(--color-bg-soft, #f8fafc);
+  background: var(--color-bg-soft, #f5f7fb);
   padding: 12px;
-  border-radius: var(--radius-md, 12px);
+  border-radius: var(--radius-lg, 16px);
   border: 1px solid var(--color-border, #e5e7eb);
+  box-shadow: var(--shadow-sm);
 }
 
 .search-filters input {
   border: 1px solid var(--color-border, #e5e7eb);
-  border-radius: var(--radius-sm, 8px);
-  padding: 10px 12px;
+  border-radius: var(--radius-pill, 999px);
+  padding: 10px 14px;
   outline: none;
+  background: #fff;
+  box-shadow: var(--shadow-sm);
 }
 
 .search-filters button {
   background: var(--color-primary, #1565c0);
   color: #fff;
   border: none;
-  border-radius: var(--radius-sm, 8px);
-  padding: 10px 14px;
-  font-weight: 600;
+  border-radius: var(--radius-pill, 999px);
+  padding: 10px 16px;
+  font-weight: 700;
   cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+}
+.search-filters button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+  box-shadow: var(--shadow-lg);
 }
 
 .events-grid {
@@ -43,8 +53,9 @@
   border: 1px solid #f6b4b4;
   color: #b42318;
   padding: 10px 12px;
-  border-radius: var(--radius-sm, 8px);
+  border-radius: var(--radius-md, 12px);
   margin-top: 12px;
+  box-shadow: var(--shadow-sm);
 }
 
 .muted {

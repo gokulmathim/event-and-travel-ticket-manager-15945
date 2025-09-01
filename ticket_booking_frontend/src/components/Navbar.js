@@ -33,7 +33,7 @@ export default function Navbar({ onSearch }) {
             placeholder="Search events, destinations..."
             aria-label="Search"
           />
-          <button type="submit" style={{ background: "var(--color-primary)" }}>Search</button>
+          <button type="submit">Search</button>
         </form>
         <nav className="nav-right">
           <Link to="/bookings" className="nav-link">My Bookings</Link>
