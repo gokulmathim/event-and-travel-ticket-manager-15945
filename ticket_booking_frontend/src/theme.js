@@ -1,7 +1,11 @@
 /**
  * Theme variables and helpers for the app.
  * This centralizes color palette and common spacing/typography tokens.
+ *
+ * Supports optional Figma token application when FIGMA_THEME_ENABLED === "true".
  */
+import { applyFigmaTokensToCSSVariables } from "./figma/figmaTheme";
+
 export const palette = {
   primary: "#1565c0",
   secondary: "#43a047",
@@ -30,8 +34,30 @@ export const radii = {
 
 export const spacing = (n) => `${n * 8}px`;
 
+// PUBLIC_INTERFACE
 export const setCSSVariables = () => {
+  /**
+   * Set CSS variables on :root using either built-in theme or Figma tokens if enabled.
+   *
+   * Env:
+   * - FIGMA_THEME_ENABLED: "true" to apply Figma tokens from figmafiles JSON.
+   */
   const root = document.documentElement;
+
+  // If Figma is enabled, try applying Figma tokens first.
+  const useFigma = String(process.env.REACT_APP_FIGMA_THEME_ENABLED || process.env.FIGMA_THEME_ENABLED || "").toLowerCase() === "true";
+  if (useFigma) {
+    try {
+      applyFigmaTokensToCSSVariables(root);
+      return; // done
+    } catch (e) {
+      // Fallback to default theme if anything goes wrong.
+      // eslint-disable-next-line no-console
+      console.warn("Figma theme application failed, falling back to default theme:", e);
+    }
+  }
+
+  // Default app theme fallback.
   root.style.setProperty("--color-primary", palette.primary);
   root.style.setProperty("--color-secondary", palette.secondary);
   root.style.setProperty("--color-accent", palette.accent);
