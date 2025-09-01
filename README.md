@@ -1,1 +1,3 @@
-# event-and-travel-ticket-manager-15945
+# Project Repository
+
+This is the initial README file for the project.
