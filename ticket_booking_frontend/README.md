@@ -1,82 +1,42 @@
-# Lightweight React Template for KAVIA
+# Ticket Booking Frontend (React)
 
-This project provides a minimal React template with a clean, modern UI and minimal dependencies.
+A modern, clean, responsive web app for searching events, selecting seats, booking tickets, managing bookings, and viewing history. Uses a light theme with:
+- Primary: #1565c0
+- Secondary: #43a047
+- Accent: #ffca28
 
 ## Features
+- User authentication (login/register, token stored in localStorage)
+- Search events with filters
+- Event details with interactive seat selection
+- Checkout with payment method and token capture (mock integration)
+- Booking creation and viewing booking details
+- Manage and cancel bookings
+- View booking history
+- Responsive layout, modern styling with CSS variables
+- Environment-based configuration
 
-- **Lightweight**: No heavy UI frameworks - uses only vanilla CSS and React
-- **Modern UI**: Clean, responsive design with KAVIA brand styling
-- **Fast**: Minimal dependencies for quick loading times
-- **Simple**: Easy to understand and modify
+## Environment Variables
+Copy `.env.example` to `.env` and set:
+- `REACT_APP_API_BASE_URL` - Base URL for the backend API (e.g., http://localhost:4000/api)
+- `REACT_APP_PAYMENT_PUBLIC_KEY` - Publishable key for your payment provider (used by the client side if integrating a real SDK)
+- `REACT_APP_SITE_URL` - Site URL for email/redirect flows (optional)
 
-## Getting Started
+## Development
+- `npm start` - Start the dev server (http://localhost:3000)
+- `npm test` - Run tests
+- `npm run build` - Build for production
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-### `npm test`
-
-Launches the test runner in interactive watch mode.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-## Customization
-
-### Colors
-
-The main brand colors are defined as CSS variables in `src/App.css`:
-
-```css
-:root {
-  --kavia-orange: #E87A41;
-  --kavia-dark: #1A1A1A;
-  --text-color: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --border-color: rgba(255, 255, 255, 0.1);
-}
-```
-
-### Components
-
-This template uses pure HTML/CSS components instead of a UI framework. You can find component styles in `src/App.css`. 
-
-Common components include:
-- Buttons (`.btn`, `.btn-large`)
-- Container (`.container`)
-- Navigation (`.navbar`)
-- Typography (`.title`, `.subtitle`, `.description`)
-
-## Learn More
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Notes
+- This frontend expects a backend with REST endpoints:
+  - POST /auth/login
+  - POST /auth/register
+  - GET /auth/me
+  - GET /events/search
+  - GET /events/:id
+  - GET /events/:id/seats
+  - POST /bookings
+  - GET /bookings/me
+  - GET /bookings/:id
+  - POST /bookings/:id/cancel
+- Replace the mock payment token input in Checkout with your provider's client SDK as needed. Keep secret keys on the server only.
