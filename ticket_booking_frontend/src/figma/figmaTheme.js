@@ -1,4 +1,5 @@
 //
+//
 // Figma token mapping utilities.
 // Purpose: Translate the extracted Figma JSON design system into runtime theme values and CSS variables.
 //
@@ -8,10 +9,7 @@
 // - Produces a small, normalized theme (colors, radii, shadows) compatible with the existing app.
 // - Intended to be optional: can be gated by an env flag.
 //
-
-// Import the Figma design system JSON as a static asset.
-// Path is relative to CRA src; figmafiles folder is at repo root, so we reach it via ../../
-import figmaDesign from "../../../figmafiles/design_system_b2c-15936-BU9ylzovRurd2coMTEsWhv.json";
+import { loadFigmaDesign } from "./figmaDesignProxy";
 
 // Helpers to safely read values with fallbacks.
 const get = (obj, path, fallback = undefined) => {
@@ -31,7 +29,7 @@ const get = (obj, path, fallback = undefined) => {
 const resolveColorRef = (design, refOrHex, fallback) => {
   // refOrHex may be something like "color_f8f8f8" or a hex string "#fff..."
   if (!refOrHex) return fallback;
-  if (refOrHex.startsWith("#")) return refOrHex;
+  if (typeof refOrHex === "string" && refOrHex.startsWith("#")) return refOrHex;
   const colorEntry = get(design, `design_system.colors.${refOrHex}`);
   if (colorEntry && colorEntry.hex) return colorEntry.hex;
   return fallback;
@@ -76,24 +74,16 @@ const nearestRadii = (arr) => {
     };
   }
   const q = (p) => nums[Math.min(nums.length - 1, Math.max(0, Math.round((nums.length - 1) * p)))];
-  const sm = toPx(q(0.10), "8px");
-  const md = toPx(q(0.20), "12px");
-  const lg = toPx(q(0.30), "16px");
+  const sm = toPx(q(0.1), "8px");
+  const md = toPx(q(0.2), "12px");
+  const lg = toPx(q(0.3), "16px");
   return { sm, md, lg, pill: "999px" };
 };
 
-// PUBLIC_INTERFACE
-export function mapFigmaDesignToTheme() {
-  /**
-   * Map the Figma design JSON to a normalized theme object for the app.
-   * Returns:
-   *  {
-   *    colors: { primary, secondary, accent, text, textMuted, bg, bgSoft, border, danger, success },
-   *    radii: { sm, md, lg, pill },
-   *    shadows: { sm, md, lg }
-   *  }
-   */
-  const design = figmaDesign || {};
+/**
+ * Internal: map a loaded JSON design object to a normalized theme structure.
+ */
+function mapLoadedDesign(design) {
   const colors = get(design, "design_system.colors", {});
 
   // Base color fallbacks (from existing app theme)
@@ -124,14 +114,11 @@ export function mapFigmaDesignToTheme() {
     resolveColorRef(design, "color_5bdf81", null) ||
     defaultTheme.secondary;
 
-  const accent =
-    pickFirstHex(design, ["color_ffc700", "color_ffd660", "color_ffb91f"], defaultTheme.accent);
+  const accent = pickFirstHex(design, ["color_ffc700", "color_ffd660", "color_ffb91f"], defaultTheme.accent);
 
-  const text =
-    pickFirstHex(design, ["color_101211", "color_000000", "color_201c22"], defaultTheme.text);
+  const text = pickFirstHex(design, ["color_101211", "color_000000", "color_201c22"], defaultTheme.text);
 
-  const textMuted =
-    pickFirstHex(design, ["color_686868", "color_b3b3b3", "color_acacac"], defaultTheme.textMuted);
+  const textMuted = pickFirstHex(design, ["color_686868", "color_b3b3b3", "color_acacac"], defaultTheme.textMuted);
 
   const bg = pickFirstHex(design, ["color_ffffff", "color_f9f9f9"], defaultTheme.bg);
   const bgSoft = pickFirstHex(design, ["color_f8f8f8", "color_efefef"], defaultTheme.bgSoft);
@@ -155,10 +142,23 @@ export function mapFigmaDesignToTheme() {
   };
 }
 
-// PUBLIC_INTERFACE
-export function applyFigmaTokensToCSSVariables(rootEl) {
-  /** Apply mapped Figma theme values to CSS variables on rootEl (document.documentElement). */
-  const t = mapFigmaDesignToTheme();
+/**
+ * PUBLIC_INTERFACE
+ * Asynchronously load the Figma design and map to theme.
+ */
+export async function mapFigmaDesignToTheme() {
+  const design = await loadFigmaDesign();
+  return mapLoadedDesign(design || {});
+}
+
+/**
+ * PUBLIC_INTERFACE
+ * Apply mapped Figma theme values to CSS variables on rootEl (document.documentElement).
+ * Returns true if theme applied, false otherwise.
+ */
+export async function applyFigmaTokensToCSSVariables(rootEl) {
+  const t = await mapFigmaDesignToTheme();
+  if (!t || !t.colors) return false;
   const root = rootEl || document.documentElement;
   root.style.setProperty("--color-primary", t.colors.primary);
   root.style.setProperty("--color-secondary", t.colors.secondary);
@@ -177,9 +177,10 @@ export function applyFigmaTokensToCSSVariables(rootEl) {
   root.style.setProperty("--radius-md", t.radii.md);
   root.style.setProperty("--radius-lg", t.radii.lg);
   root.style.setProperty("--radius-pill", t.radii.pill);
+  return true;
 }
 
 export default {
   mapFigmaDesignToTheme,
   applyFigmaTokensToCSSVariables,
-};
+}

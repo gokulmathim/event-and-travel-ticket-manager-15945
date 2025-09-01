@@ -35,7 +35,16 @@ export const radii = {
 export const spacing = (n) => `${n * 8}px`;
 
 // PUBLIC_INTERFACE
-export const setCSSVariables = () => {
+const awaitPromise = (p) => {
+  // If p is a promise, await it via then/catch, otherwise return p.
+  if (p && typeof p.then === "function") {
+    return p.then((v) => v).catch(() => false);
+  }
+  return p;
+};
+
+// PUBLIC_INTERFACE
+export const setCSSVariables = async () => {
   /**
    * Set CSS variables on :root using either built-in theme or Figma tokens if enabled.
    *
@@ -48,8 +57,11 @@ export const setCSSVariables = () => {
   const useFigma = String(process.env.REACT_APP_FIGMA_THEME_ENABLED || process.env.FIGMA_THEME_ENABLED || "").toLowerCase() === "true";
   if (useFigma) {
     try {
-      applyFigmaTokensToCSSVariables(root);
-      return; // done
+      // Support async application; if it returns true, stop here.
+      const applied = typeof applyFigmaTokensToCSSVariables === "function"
+        ? awaitPromise(applyFigmaTokensToCSSVariables(root))
+        : false;
+      if (applied) return;
     } catch (e) {
       // Fallback to default theme if anything goes wrong.
       // eslint-disable-next-line no-console

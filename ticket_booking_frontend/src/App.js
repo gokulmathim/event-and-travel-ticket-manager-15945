@@ -24,7 +24,14 @@ import "./App.css";
 function App() {
   /** Root application component providing context and routes. */
   useEffect(() => {
-    setCSSVariables();
+    const run = async () => {
+      try {
+        await setCSSVariables();
+      } catch (_) {
+        // ignore theming errors; CSS falls back to defaults via CSS vars in index.css
+      }
+    };
+    run();
   }, []);
 
   return (
