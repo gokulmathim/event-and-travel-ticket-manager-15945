@@ -1,0 +1,35 @@
+.profile-root {
+  max-width: 720px;
+  margin: 16px auto;
+  padding: 0 16px 24px;
+}
+
+.card {
+  border: 1px solid var(--color-border, #e5e7eb);
+  background: var(--color-bg, #fff);
+  border-radius: var(--radius-md, 12px);
+  padding: 14px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.label {
+  color: var(--color-text-muted, #6b7280);
+}
+
+.value {
+  font-weight: 600;
+}
+
+.muted {
+  color: var(--color-text-muted, #6b7280);
+}

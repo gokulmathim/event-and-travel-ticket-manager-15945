@@ -1,0 +1,104 @@
+.checkout-root {
+  max-width: 900px;
+  margin: 16px auto;
+  padding: 0 16px 24px;
+}
+
+.checkout-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.checkout-main {
+  border: 1px solid var(--color-border, #e5e7eb);
+  background: var(--color-bg, #fff);
+  border-radius: var(--radius-lg, 16px);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  padding: 8px 0 16px;
+}
+
+.muted {
+  color: var(--color-text-muted, #6b7280);
+  font-size: 13px;
+}
+
+.value {
+  font-weight: 700;
+}
+.value.strong {
+  font-size: 18px;
+}
+
+.payment .method {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0 12px;
+}
+.payment .method label {
+  border: 1px solid var(--color-border, #e5e7eb);
+  padding: 8px 12px;
+  border-radius: var(--radius-pill, 999px);
+  cursor: pointer;
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+}
+.payment .method label.active {
+  border-color: var(--color-primary, #1565c0);
+  background: #e8f0fe;
+}
+
+.payment .token input {
+  width: 100%;
+  border: 1px solid var(--color-border, #e5e7eb);
+  padding: 12px 14px;
+  border-radius: var(--radius-sm, 10px);
+}
+.payment .help {
+  font-size: 12px;
+  color: var(--color-text-muted, #6b7280);
+  margin-top: 6px;
+}
+
+.actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.btn-primary,
+.btn-secondary {
+  border-radius: var(--radius-pill, 999px);
+  padding: var(--btn-padding-y, 12px) var(--btn-padding-x, 18px);
+  box-shadow: var(--shadow-md);
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+}
+.btn-primary:hover,
+.btn-secondary:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+  box-shadow: var(--shadow-lg);
+}
+
+.alert.error {
+  background: #fdecec;
+  border: 1px solid #f6b4b4;
+  color: #b42318;
+  padding: 10px 12px;
+  border-radius: var(--radius-md, 12px);
+  margin-top: 12px;
+  box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 720px) {
+  .summary {
+    grid-template-columns: 1fr 1fr;
+  }
+}
